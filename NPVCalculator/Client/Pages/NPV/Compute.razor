@@ -1,0 +1,56 @@
+﻿@page "/npv/compute"
+@inject HttpClient  Http
+@inject NavigationManager  Navigation
+
+<h3>Net Present Value Calculator</h3>
+
+
+<EditForm Model="@criteriaVM" OnValidSubmit="@ComputeNPV">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-row">
+        <div class="col-md-8">
+            <div class="col-md-12 mb-3">
+                <label for="cashFlows">Cash Flows</label>
+                <input type="text" class="form-control" id="cashFlows" @bind-value="criteriaVM.CashFlows">
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="initial">Initial Value</label>
+                <input type="text" class="form-control" id="initial" @bind-value="criteriaVM.InitialValue">
+            </div>
+            <div class="col-md-12 mb-3">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="lowerDiscount">Lower Bound Discount</label>
+                        <input type="text" class="form-control" id="lowerDiscount" @bind-value="criteriaVM.LowerBoundDiscountRate">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="upperDiscount">Upper Bound Discount</label>
+                        <input type="text" class="form-control" id="upperDiscount" @bind-value="criteriaVM.UpperBoundDiscountRate">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="discountIncrement">Discount Rate Increment</label>
+                <input type="text" class="form-control" id="discountIncrement" @bind-value="criteriaVM.DiscountRateIncrement">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary"><span class="mdi mdi-content-save" />&nbsp;Compute</button>
+
+
+    </div>
+</EditForm>
+
+@code {
+
+    private CriteriaViewModel criteriaVM = new CriteriaViewModel();
+
+    public async Task ComputeNPV()
+    {
+        var criteria = criteriaVM.MapToModel();
+        criteria = await Http.PostJsonAsync<NPVCriteria>("api/NPV", criteria);
+        Navigation.NavigateTo("npv/result/" + criteria.ReferenceId);
+    }
+
+}

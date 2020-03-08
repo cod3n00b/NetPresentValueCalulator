@@ -1,0 +1,50 @@
+﻿@page "/npv/result/{Id:int}"
+@inject HttpClient  Http
+
+<h3>Net Present Value</h3>
+
+@if (resultVM != null)
+{
+    <div class="card card-default">
+        <div class="card-header card-header-border-bottom">
+            <h2>Striped Table</h2>
+        </div>
+        <div class="card-body">
+            <p class="mb-5">Use <code>.table-striped</code> to add zebra-striping to any table row within the &lt;tbody&gt;. Read bootstrap documentation for <a href="http://getbootstrap.com/docs/4.1/content/tables/#striped-rows" target="_blank"> more details.</a></p>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Cash Flows</th>
+                        <th scope="col">Initial Value</th>
+                        <th scope="col">Discount Rate</th>
+                        <th scope="col">Net Present Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (ResultListItemViewModel item in resultVM.Results)
+                    {
+                        <tr>
+                            <td>@item.CashFlows</td>
+                            <td>@item.InitialValue</td>
+                            <td>@item.DiscountRate</td>
+                            <td>@item.NPV</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private ResultViewModel resultVM;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var criteria = await Http.GetJsonAsync<NPVCriteria>("api/NPV/" + Id);
+        resultVM = ResultViewModel.MapToViewModel(criteria);
+    }
+}

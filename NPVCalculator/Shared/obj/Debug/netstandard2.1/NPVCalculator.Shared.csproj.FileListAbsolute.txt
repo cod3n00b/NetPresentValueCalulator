@@ -1,0 +1,8 @@
+C:\Users\NICCOJULIUSELABA\source\repos\NPVCalculator\NPVCalculator\Shared\bin\Debug\netstandard2.1\NPVCalculator.Shared.deps.json
+C:\Users\NICCOJULIUSELABA\source\repos\NPVCalculator\NPVCalculator\Shared\bin\Debug\netstandard2.1\NPVCalculator.Shared.dll
+C:\Users\NICCOJULIUSELABA\source\repos\NPVCalculator\NPVCalculator\Shared\bin\Debug\netstandard2.1\NPVCalculator.Shared.pdb
+C:\Users\NICCOJULIUSELABA\source\repos\NPVCalculator\NPVCalculator\Shared\obj\Debug\netstandard2.1\NPVCalculator.Shared.csprojAssemblyReference.cache
+C:\Users\NICCOJULIUSELABA\source\repos\NPVCalculator\NPVCalculator\Shared\obj\Debug\netstandard2.1\NPVCalculator.Shared.AssemblyInfoInputs.cache
+C:\Users\NICCOJULIUSELABA\source\repos\NPVCalculator\NPVCalculator\Shared\obj\Debug\netstandard2.1\NPVCalculator.Shared.AssemblyInfo.cs
+C:\Users\NICCOJULIUSELABA\source\repos\NPVCalculator\NPVCalculator\Shared\obj\Debug\netstandard2.1\NPVCalculator.Shared.dll
+C:\Users\NICCOJULIUSELABA\source\repos\NPVCalculator\NPVCalculator\Shared\obj\Debug\netstandard2.1\NPVCalculator.Shared.pdb

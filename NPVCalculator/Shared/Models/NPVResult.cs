@@ -13,8 +13,6 @@ namespace NPVCalculator.Shared.Models
         public int ReferenceId { get; set; }
         [ForeignKey("ReferenceId")]
         public NPVCriteria Criteria { get; set; }
-        public string CashFlows { get; set; }
-        public decimal InitialValue { get; set; }
         public decimal DiscountRate { get; set; }
         public decimal NPV { get; set; }
 

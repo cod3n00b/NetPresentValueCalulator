@@ -52,8 +52,6 @@ namespace NPVCalculator.Shared.Models
                 {
                     ReferenceId = this.ReferenceId,
                     Criteria = this,
-                    CashFlows = this.CashFlows,
-                    InitialValue = this.InitialValue,
                     DiscountRate = currentDiscount,
                     NPV = ComputeNPV(currentDiscount)
                 };

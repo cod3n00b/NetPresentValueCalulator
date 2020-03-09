@@ -29,8 +29,8 @@ namespace NPVCalculator.Client.ViewModels
             resultVM.Results = criteria.Results.Select(x =>
             new ResultListItemViewModel()
             {
-                CashFlows = x.CashFlows,
-                InitialValue = x.InitialValue,
+                CashFlows = resultVM.CashFlows,
+                InitialValue = resultVM.InitialValue,
                 DiscountRate = float.Parse(x.DiscountRate.ToString()),
                 NPV = x.NPV
             }

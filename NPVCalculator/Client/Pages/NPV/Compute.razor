@@ -7,39 +7,40 @@
 
 <EditForm Model="@criteriaVM" OnValidSubmit="@ComputeNPV">
     <DataAnnotationsValidator />
-    <ValidationSummary />
     <div class="form-row">
         <div class="col-md-8">
             <div class="col-md-12 mb-3">
                 <label for="cashFlows">Cash Flows</label>
-                <input type="text" class="form-control" id="cashFlows" @bind-value="criteriaVM.CashFlows">
+                <InputText class="form-control" id="cashFlows" @bind-Value="criteriaVM.CashFlows" />
+                <ValidationMessage For="@(() => criteriaVM.CashFlows)" />
             </div>
             <div class="col-md-12 mb-3">
                 <label for="initial">Initial Value</label>
-                <input type="text" class="form-control" id="initial" @bind-value="criteriaVM.InitialValue">
+                <InputText class="form-control" id="initial" @bind-Value="criteriaVM.InitialValue" />
+                <ValidationMessage For="@(() => criteriaVM.InitialValue)" />
             </div>
             <div class="col-md-12 mb-3">
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="lowerDiscount">Lower Bound Discount</label>
-                        <input type="text" class="form-control" id="lowerDiscount" @bind-value="criteriaVM.LowerBoundDiscountRate">
+                        <InputText class="form-control" id="lowerDiscount" @bind-Value="criteriaVM.LowerBoundDiscountRate" />
+                        <ValidationMessage For="@(() => criteriaVM.LowerBoundDiscountRate)" />
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="upperDiscount">Upper Bound Discount</label>
-                        <input type="text" class="form-control" id="upperDiscount" @bind-value="criteriaVM.UpperBoundDiscountRate">
+                        <InputText class="form-control" id="upperDiscount" @bind-Value="criteriaVM.UpperBoundDiscountRate" />
+                        <ValidationMessage For="@(() => criteriaVM.UpperBoundDiscountRate)" />
                     </div>
                 </div>
             </div>
             <div class="col-md-12 mb-3">
                 <label for="discountIncrement">Discount Rate Increment</label>
-                <input type="text" class="form-control" id="discountIncrement" @bind-value="criteriaVM.DiscountRateIncrement">
+                <InputText class="form-control" id="discountIncrement" @bind-Value="criteriaVM.DiscountRateIncrement" />
+                <ValidationMessage For="@(() => criteriaVM.DiscountRateIncrement)" />
             </div>
         </div>
-
-        <button type="submit" class="btn btn-primary"><span class="mdi mdi-content-save" />&nbsp;Compute</button>
-
-
     </div>
+    <button type="submit" class="btn btn-primary"><span class="mdi mdi-content-save" />&nbsp;Compute</button>
 </EditForm>
 
 @code {

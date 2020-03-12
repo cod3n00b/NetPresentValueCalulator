@@ -55,7 +55,7 @@ namespace NPVCalculator.Client.ViewModels
             {
                 sortedResults = this.Results
                                         .Where(x => x.NPV < 0)
-                                        .OrderBy(x => x.NPV);
+                                        .OrderBy(x => x.DiscountRate);
             }
             else
             {
@@ -71,8 +71,8 @@ namespace NPVCalculator.Client.ViewModels
             lowerBound = sortedResults.FirstOrDefault().DiscountRate;
             upperBound = sortedResults.LastOrDefault().DiscountRate;
 
-            return (lowerBound == upperBound) ? lowerBound.ToString("#,#.00") + "%"
-                    : lowerBound.ToString("#,#.00") + " - " + upperBound.ToString("#,#.00") + "%";
+            return (lowerBound == upperBound) ? lowerBound.ToString("#,#.##") + "%"
+                    : lowerBound.ToString("#,#.##") + " - " + upperBound.ToString("#,#.##") + "%";
         }
 
         public static ResultViewModel MapToViewModel(NPVCriteria criteria)

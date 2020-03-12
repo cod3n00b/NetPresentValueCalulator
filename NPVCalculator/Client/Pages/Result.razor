@@ -32,7 +32,7 @@
                 <div class="mt-3"></div>
                 <div class="card-footer bg-white widget-block rounded d-flex">
                     <div class="widget-info align-self-center w-50">
-                        <h3 class="text-dark mb-2">@resultVM.TotalCashFlows.ToString("#,#.00")</h3>
+                        <h3 class="text-dark mb-2">@("₱" + resultVM.TotalCashFlows.ToString("#,#.00"))</h3>
                         <p>Total Cash Flows</p>
                     </div>
                     <div class="widget-chart w-50">
@@ -46,7 +46,7 @@
 
             <div class="widget-block rounded bg-white  d-flex">
                 <div class="widget-info align-self-center w-50">
-                    <h3 class="text-dark mb-2">@resultVM.InitialValue.ToString("#,#.00")</h3>
+                    <h3 class="text-dark mb-2">@("₱" + resultVM.InitialValue.ToString("#,#.00"))</h3>
                     <p>Initial Cost</p>
                 </div>
                 <div class="widget-chart w-50">
@@ -62,17 +62,17 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <h3 class="text-dark mb-2">@resultVM.DiscountRateIncrement.ToString("#,#.00")</h3>
+                            <h3 class="text-dark mb-2">@resultVM.DiscountRateIncrement.ToString("#,#.##")</h3>
                             <p>Increment</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-4">
-                            <h3 class="text-dark mb-2">@resultVM.LowerBoundDiscountRate.ToString("#,#.00")</h3>
+                            <h3 class="text-dark mb-2">@resultVM.LowerBoundDiscountRate.ToString("#,#.##")</h3>
                             <p>Lower Bound</p>
                         </div>
                         <div class="col-4">
-                            <h3 class="text-dark mb-2">@resultVM.UpperBoundDiscountRate.ToString("#,#.00")</h3>
+                            <h3 class="text-dark mb-2">@resultVM.UpperBoundDiscountRate.ToString("#,#.##")</h3>
                             <p>Upper Bound</p>
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                             @foreach (var result in resultVM.Results)
                             {
                                 <tr class="@(result.NPV >= 0 ? "table-success" : "table-danger")">
-                                    <td>@(result.DiscountRate.ToString("#,#.00") + "%")</td>
+                                    <td>@(result.DiscountRate.ToString("#,#.##") + "%")</td>
                                     <td>@result.NPV.ToString("#,#.00")</td>
                                 </tr>
                             }

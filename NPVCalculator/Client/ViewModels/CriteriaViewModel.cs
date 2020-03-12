@@ -9,9 +9,10 @@ namespace NPVCalculator.Client.ViewModels
 {
     public class CriteriaViewModel
     {
-        [Required]
         [Display(Name = "Cash Flows")]
-        public string CashFlows { get; set; }
+        public Dictionary<int, string> CashFlows { get; set; } = new Dictionary<int, string>();
+        [Required(ErrorMessage = "Please enter at least one cash flow.")]
+        public string CashFlowHidden { get; set; }
         [Required]
         [RegularExpression("^\\d{0,}[.]{0,}\\d{1,}$", ErrorMessage = "Initial Value must be a number")]
         [Display(Name = "Initial Value")]
@@ -31,9 +32,10 @@ namespace NPVCalculator.Client.ViewModels
 
         public NPVCriteria MapToModel()
         {
+
             var criteria = new NPVCriteria()
             {
-                CashFlows = this.CashFlows,
+                CashFlows = string.Join(",", this.CashFlows.Values),
                 InitialValue = Convert.ToDecimal(this.InitialValue),
                 LowerBoundDiscountRate = Convert.ToDecimal(this.LowerBoundDiscountRate) / 100,
                 UpperBoundDiscountRate = Convert.ToDecimal(this.UpperBoundDiscountRate) / 100,

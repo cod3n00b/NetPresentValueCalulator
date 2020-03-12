@@ -1,15 +1,37 @@
 ﻿@inherits LayoutComponentBase
+@inject IJSRuntime  JSRuntime
 
-<div class="sidebar">
-    <NavMenu />
-</div>
+<div class="content-wrapper">
+    <div class="content">
 
-<div class="main">
-    <div class="top-row px-4">
-        <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+        <div class="breadcrumb-wrapper">
+            <div>
+                <h1 class="text-center">Net Present Value Calculator</h1>
+            </div>
+        </div>
+
+        <div class="container">
+            @Body
+        </div>
+
     </div>
 
-    <div class="content px-4">
-        @Body
-    </div>
+    <footer class="footer mt-auto npv-footer">
+        <div class="copyright bg-white">
+            <p>
+                This project is only intended for code demonstration purposes.
+            </p>
+        </div>
+    </footer>
+
 </div>
+
+@code {
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        //await JSRuntime.InvokeVoidAsync("blazorJquerySlimscroll");
+        await JSRuntime.InvokeVoidAsync("blazorSleekBundle");
+    }
+
+}

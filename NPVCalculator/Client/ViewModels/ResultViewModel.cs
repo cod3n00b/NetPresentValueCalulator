@@ -71,8 +71,8 @@ namespace NPVCalculator.Client.ViewModels
             lowerBound = sortedResults.FirstOrDefault().DiscountRate;
             upperBound = sortedResults.LastOrDefault().DiscountRate;
 
-            return (lowerBound == upperBound) ? lowerBound.ToString("#,#.00")
-                    : lowerBound.ToString("#,#.00") + " - " + upperBound.ToString("#,#.00");
+            return (lowerBound == upperBound) ? lowerBound.ToString("#,#.00") + "%"
+                    : lowerBound.ToString("#,#.00") + " - " + upperBound.ToString("#,#.00") + "%";
         }
 
         public static ResultViewModel MapToViewModel(NPVCriteria criteria)

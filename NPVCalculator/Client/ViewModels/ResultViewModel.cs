@@ -95,7 +95,7 @@ namespace NPVCalculator.Client.ViewModels
                 DiscountRate = x.DiscountRate * 100,
                 NPV = x.NPV
             }
-            ).ToList();
+            ).OrderBy(x => x.DiscountRate).ToList();
 
             return resultVM;
         }

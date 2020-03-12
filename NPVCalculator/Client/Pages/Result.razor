@@ -60,19 +60,19 @@
                     <h2>Discount Rates</h2>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <h3 class="text-dark mb-2">@resultVM.DiscountRateIncrement.ToString("#,#.##")</h3>
+                    <div class="row border-bottom">
+                        <div class="col-12 text-center">
+                            <h3 class="text-dark mb-2">@(resultVM.DiscountRateIncrement.ToString("#,#.##") + "%")</h3>
                             <p>Increment</p>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4">
-                            <h3 class="text-dark mb-2">@resultVM.LowerBoundDiscountRate.ToString("#,#.##")</h3>
+                        <div class="col-6 text-center">
+                            <h3 class="text-dark mb-2">@(resultVM.LowerBoundDiscountRate.ToString("#,#.##") + "%")</h3>
                             <p>Lower Bound</p>
                         </div>
-                        <div class="col-4">
-                            <h3 class="text-dark mb-2">@resultVM.UpperBoundDiscountRate.ToString("#,#.##")</h3>
+                        <div class="col-6 text-center border-left">
+                            <h3 class="text-dark mb-2">@(resultVM.UpperBoundDiscountRate.ToString("#,#.##") + "%")</h3>
                             <p>Upper Bound</p>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                             {
                                 <tr class="@(result.NPV >= 0 ? "table-success" : "table-danger")">
                                     <td>@(result.DiscountRate.ToString("#,#.##") + "%")</td>
-                                    <td>@result.NPV.ToString("#,#.00")</td>
+                                    <td>@("₱" + result.NPV.ToString("#,#.00"))</td>
                                 </tr>
                             }
                         </tbody>

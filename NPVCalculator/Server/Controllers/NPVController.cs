@@ -40,7 +40,10 @@ namespace NPVCalculator.Server.Controllers
 
             if (nPVCriteria == null)
             {
-                return NotFound();
+                nPVCriteria = new NPVCriteria()
+                {
+                    ErrorMessage = "Reference Id not found."
+                };
             }
 
             return nPVCriteria;

@@ -8,7 +8,7 @@ namespace NPVCalculator.Client.ViewModels
 {
     public class InputCashFlowViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Please input Cash Flow.")]
         [RegularExpression("^\\d{0,}[.]{0,}\\d{1,}$", ErrorMessage = "Cash flow must be in a numeric format.")]
         public string InputCashFlow { get; set; }
     }

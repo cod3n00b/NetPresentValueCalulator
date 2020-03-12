@@ -1,159 +1,185 @@
 ﻿@page "/result/{Id:int}"
 @inject HttpClient  Http
 @inject IJSRuntime  JSRuntime
+@inject NavigationManager  Navigation
 
 
-<h5 class="text-center pb-3">Result for Reference ID: @resultVM.ReferenceId</h5>
-
-
-<div class="container">
-
-    <div class="row">
-        <div class="col-6">
-            <div class="card card-default" data-scroll-height="500">
-                <div class="card-header justify-content-between align-items-center card-header-border-bottom">
-                    <h2>Cash Flows</h2>
-                </div>
-                <div class="card-body slim-scroll">
-
-                    @foreach (decimal cashFlow in resultVM.CashFlows)
-                    {
-                        <div class="media py-3 align-items-center justify-content-between">
-                            <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
-                                <i class="mdi mdi-currency-php font-size-20"></i>
-                            </div>
-                            <div class="media-body pr-3 ">
-                                <label class="mt-0 mb-1 font-size-15 text-dark">@cashFlow.ToString("#,#.00")</label>
-                            </div>
-                        </div>
-                    }
-
-                </div>
-                <div class="mt-3"></div>
-                <div class="card-footer bg-white widget-block rounded d-flex">
-                    <div class="widget-info align-self-center w-50">
-                        <h3 class="text-dark mb-2">@("₱" + resultVM.TotalCashFlows.ToString("#,#.00"))</h3>
-                        <p>Total Cash Flows</p>
-                    </div>
-                    <div class="widget-chart w-50">
-                        <canvas id="barChart1"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-6">
-
-            <div class="widget-block rounded bg-white  d-flex">
-                <div class="widget-info align-self-center w-50">
-                    <h3 class="text-dark mb-2">@("₱" + resultVM.InitialValue.ToString("#,#.00"))</h3>
-                    <p>Initial Cost</p>
-                </div>
-                <div class="widget-chart w-50">
-                    <canvas id="gline1"></canvas>
-                </div>
-            </div>
-
-
-            <div class="card card-default">
-                <div class="card-header justify-content-between align-items-center card-header-border-bottom">
-                    <h2>Discount Rates</h2>
-                </div>
-                <div class="card-body">
-                    <div class="row border-bottom">
-                        <div class="col-12 text-center">
-                            <h3 class="text-dark mb-2">@(resultVM.DiscountRateIncrement.ToString("#,#.##") + "%")</h3>
-                            <p>Increment</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6 text-center">
-                            <h3 class="text-dark mb-2">@(resultVM.LowerBoundDiscountRate.ToString("#,#.##") + "%")</h3>
-                            <p>Lower Bound</p>
-                        </div>
-                        <div class="col-6 text-center border-left">
-                            <h3 class="text-dark mb-2">@(resultVM.UpperBoundDiscountRate.ToString("#,#.##") + "%")</h3>
-                            <p>Upper Bound</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-3"></div>
-            </div>
-
+@if (isLoading)
+{
+    <div class="container h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="sk-rotating-plane"></div>
         </div>
     </div>
+}
+else
+{
 
-    <!--Table -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card card-default">
-                <div class="card-header card-header-border-bottom">
-                    <h2>Net Present Value Table</h2>
-                </div>
-                <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Discount Rate</th>
-                                <th scope="col">Net Present Value</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var result in resultVM.Results)
+    if (string.IsNullOrEmpty(resultVM.ErrorMessage))
+    {
+        <h5 class="text-center pb-3">Result for Reference ID: @resultVM.ReferenceId</h5>
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <div class="card card-default" data-scroll-height="500">
+                        <div class="card-header justify-content-between align-items-center card-header-border-bottom">
+                            <h2>Cash Flows</h2>
+                        </div>
+                        <div class="card-body slim-scroll">
+
+                            @foreach (decimal cashFlow in resultVM.CashFlows)
                             {
-                                <tr class="@(result.NPV >= 0 ? "table-success" : "table-danger")">
-                                    <td>@(result.DiscountRate.ToString("#,#.##") + "%")</td>
-                                    <td>@("₱" + result.NPV.ToString("#,#.00"))</td>
-                                </tr>
+                            <div class="media py-3 align-items-center justify-content-between">
+                                <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
+                                    <i class="mdi mdi-currency-php font-size-20"></i>
+                                </div>
+                                <div class="media-body pr-3 ">
+                                    <label class="mt-0 mb-1 font-size-15 text-dark">@("₱" + cashFlow.ToString("#,#.00"))</label>
+                                </div>
+                            </div>
                             }
-                        </tbody>
-                    </table>
+
+                        </div>
+                        <div class="mt-3"></div>
+                        <div class="card-footer bg-white widget-block rounded d-flex">
+                            <div class="widget-info align-self-center w-50">
+                                <h3 class="text-dark mb-2">@("₱" + resultVM.TotalCashFlows.ToString("#,#.00"))</h3>
+                                <p>Total Cash Flows</p>
+                            </div>
+                            <div class="widget-chart w-50">
+                                <canvas id="barChart1"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+
+                    <div class="widget-block rounded bg-white  d-flex">
+                        <div class="widget-info align-self-center w-50">
+                            <h3 class="text-dark mb-2">@("₱" + resultVM.InitialValue.ToString("#,#.00"))</h3>
+                            <p>Initial Cost</p>
+                        </div>
+                        <div class="widget-chart w-50">
+                            <canvas id="gline1"></canvas>
+                        </div>
+                    </div>
+
+
+                    <div class="card card-default">
+                        <div class="card-header justify-content-between align-items-center card-header-border-bottom">
+                            <h2>Discount Rates</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="row border-bottom">
+                                <div class="col-12 text-center">
+                                    <h3 class="text-dark mb-2">@(resultVM.DiscountRateIncrement.ToString("#,#.##") + "%")</h3>
+                                    <p>Increment</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 text-center">
+                                    <h3 class="text-dark mb-2">@(resultVM.LowerBoundDiscountRate.ToString("#,#.##") + "%")</h3>
+                                    <p>Lower Bound</p>
+                                </div>
+                                <div class="col-6 text-center border-left">
+                                    <h3 class="text-dark mb-2">@(resultVM.UpperBoundDiscountRate.ToString("#,#.##") + "%")</h3>
+                                    <p>Upper Bound</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3"></div>
+                    </div>
+
                 </div>
             </div>
+
+            <!--Table -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card card-default">
+                        <div class="card-header card-header-border-bottom">
+                            <h2>Net Present Value Table</h2>
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Discount Rate</th>
+                                        <th scope="col">Net Present Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var result in resultVM.Results)
+                                    {
+                                        <tr class="@(result.NPV >= 0 ? "table-success" : "table-danger")">
+                                            <td>@(result.DiscountRate.ToString("#,#.##") + "%")</td>
+                                            <td>@("₱" + result.NPV.ToString("#,#.00"))</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- First Row  -->
+            <div class="row">
+                <div class="col-md-12 col-lg-6 col-xl-6">
+                    <div class="widget-block rounded bg-danger  d-flex">
+                        <div class="widget-info align-self-center w-50">
+                            <h3 class="text-white mb-2">@(resultVM.NegativeDiscountRateRange)</h3>
+                            <p>Negative NPV Discount Rate Range</p>
+                        </div>
+                        <div class="widget-chart w-50">
+                            <canvas id="areaChart2"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-6 col-xl-6">
+                    <div class="widget-block rounded bg-success  d-flex">
+                        <div class="widget-info align-self-center w-50">
+                            <h3 class="text-white mb-2">@(resultVM.PositiveDiscountRateRange)</h3>
+                            <p>Positive NPV Discount Rate Range</p>
+                        </div>
+                        <div class="widget-chart w-50">
+                            <canvas id="gline2"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart  -->
+            <div class="row">
+                <div class="col-xl-12 col-md-12">
+                    <div class="card card-default" data-scroll-height="675">
+                        <div class="card-header">
+                            <h2>Net Present Value Chart</h2>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="npvchart" class="chartjs"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            <i class="mdi mdi-alert mr-1"></i> @resultVM.ErrorMessage
+        </div>
+    }
+
+    <div class="mt-2 mb-6 d-flex justify-content-center">
+        <button type="button" class="btn btn-secondary" @onclick="BackToMain"><span class="mdi mdi-home font-size-15"></span>&nbsp;Back to Main</button>
     </div>
 
-    <!-- First Row  -->
-    <div class="row">
-        <div class="col-md-12 col-lg-6 col-xl-6">
-            <div class="widget-block rounded bg-danger  d-flex">
-                <div class="widget-info align-self-center w-50">
-                    <h3 class="text-white mb-2">@(resultVM.NegativeDiscountRateRange)</h3>
-                    <p>Negative NPV Discount Rate Range</p>
-                </div>
-                <div class="widget-chart w-50">
-                    <canvas id="areaChart2"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-lg-6 col-xl-6">
-            <div class="widget-block rounded bg-success  d-flex">
-                <div class="widget-info align-self-center w-50">
-                    <h3 class="text-white mb-2">@(resultVM.PositiveDiscountRateRange)</h3>
-                    <p>Positive NPV Discount Rate Range</p>
-                </div>
-                <div class="widget-chart w-50">
-                    <canvas id="gline2"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Chart  -->
-    <div class="row">
-        <div class="col-xl-12 col-md-12">
-            <div class="card card-default" data-scroll-height="675">
-                <div class="card-header">
-                    <h2>Net Present Value Chart</h2>
-                </div>
-                <div class="card-body">
-                    <canvas id="npvchart" class="chartjs"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
+}
 
 @code {
     [Parameter]
@@ -161,14 +187,32 @@
 
     private ResultViewModel resultVM = new ResultViewModel();
 
+    private bool isLoading = true;
+
     protected override async Task OnInitializedAsync()
     {
         var criteria = await Http.GetJsonAsync<NPVCriteria>("api/NPV/" + Id);
+        if (criteria.HasError)
+        {
+            resultVM.ErrorMessage = criteria.ErrorMessage;
+            return;
+        }
         resultVM = ResultViewModel.MapToViewModel(criteria);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("blazorSleekBundle");
 
         //populate chart data
         var listX = resultVM.Results.Select(x => x.DiscountRate);
         var listY = resultVM.Results.Select(x => x.NPV);
         await JSRuntime.InvokeVoidAsync("displayNPVChart", listX, listY);
+        isLoading = false;
+    }
+
+    private void BackToMain()
+    {
+        Navigation.NavigateTo("");
     }
 }

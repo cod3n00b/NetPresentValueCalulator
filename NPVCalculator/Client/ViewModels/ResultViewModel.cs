@@ -46,6 +46,8 @@ namespace NPVCalculator.Client.ViewModels
         }
         public List<ResultListItemViewModel> Results { get; set; } = new List<ResultListItemViewModel>();
 
+        public string ErrorMessage { get; set; }
+
         private string GetDiscountRateRange(NPVResultType resultType)
         {
             decimal lowerBound;
@@ -87,6 +89,7 @@ namespace NPVCalculator.Client.ViewModels
                 LowerBoundDiscountRate = criteria.LowerBoundDiscountRate * 100,
                 UpperBoundDiscountRate = criteria.UpperBoundDiscountRate * 100,
                 DiscountRateIncrement = criteria.DiscountRateIncrement * 100,
+                ErrorMessage = criteria.ErrorMessage
             };
 
             resultVM.Results = criteria.Results.Select(x =>

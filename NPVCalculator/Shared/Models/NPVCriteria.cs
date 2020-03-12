@@ -18,6 +18,16 @@ namespace NPVCalculator.Shared.Models
         public decimal DiscountRateIncrement { get; set; }
         public List<NPVResult> Results { get; set; } = new List<NPVResult>();
         public DateTime DateCreated { get; set; }
+        [NotMapped]
+        public bool HasError
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(this.ErrorMessage);
+            }
+        }
+        [NotMapped]
+        public string ErrorMessage { get; set; }
 
         public decimal ComputeNPV(decimal currentDiscount)
         {

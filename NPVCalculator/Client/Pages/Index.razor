@@ -1,11 +1,12 @@
 ﻿@page "/"
 @inject NavigationManager  Navigation
+@inject IJSRuntime  JSRuntime
 
 <div class="text-center">
     <button class="btn btn-lg btn-outline-primary" @onclick="RedirectToComputePage">Compute For NPV</button>
     <p class="text-center pb-0 pt-3">Or</p>
     <p class="text-center pb-3 pt-3">Enter a reference ID below to view previous result</p>
-    <EditForm Model="@index" OnValidSubmit="@RedirectToResultPage" class="form-inline d-flex justify-content-center">
+    <EditForm Model="@index" OnValidSubmit="@SearchReferenceAndRedirectResultIfValid" class="form-inline d-flex justify-content-center">
         <DataAnnotationsValidator />
         <div class="input-group mb-2 mr-sm-2">
             <InputText id="referenceId" class="form-control" @bind-Value="index.ReferenceId" />
@@ -24,7 +25,7 @@
         Navigation.NavigateTo("compute");
     }
 
-    public void RedirectToResultPage()
+    public void SearchReferenceAndRedirectResultIfValid()
     {
         Navigation.NavigateTo("result/" + index.ReferenceId);
     }

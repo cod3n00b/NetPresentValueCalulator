@@ -1,5 +1,6 @@
 ﻿@page "/result/{Id:int}"
 @inject HttpClient  Http
+@inject IJSRuntime  JSRuntime
 
 
 <h5 class="text-center pb-3">Result for Reference ID: @resultVM.ReferenceId</h5>
@@ -141,27 +142,12 @@
     <!-- Chart  -->
     <div class="row">
         <div class="col-xl-12 col-md-12">
-            <!-- Sales Graph -->
             <div class="card card-default" data-scroll-height="675">
                 <div class="card-header">
                     <h2>Net Present Value Chart</h2>
                 </div>
                 <div class="card-body">
-                    <canvas id="linechart" class="chartjs"></canvas>
-                </div>
-                <div class="card-footer d-flex flex-wrap bg-white p-0">
-                    <div class="col-6 px-0">
-                        <div class="text-center p-4">
-                            <h4>$6,308</h4>
-                            <p class="mt-2">Total orders of this year</p>
-                        </div>
-                    </div>
-                    <div class="col-6 px-0">
-                        <div class="text-center p-4 border-left">
-                            <h4>$70,506</h4>
-                            <p class="mt-2">Total revenue of this year</p>
-                        </div>
-                    </div>
+                    <canvas id="npvchart" class="chartjs"></canvas>
                 </div>
             </div>
         </div>
@@ -179,5 +165,10 @@
     {
         var criteria = await Http.GetJsonAsync<NPVCriteria>("api/NPV/" + Id);
         resultVM = ResultViewModel.MapToViewModel(criteria);
+
+        //populate chart data
+        var listX = resultVM.Results.Select(x => x.DiscountRate);
+        var listY = resultVM.Results.Select(x => x.NPV);
+        await JSRuntime.InvokeVoidAsync("displayNPVChart", listX, listY);
     }
 }

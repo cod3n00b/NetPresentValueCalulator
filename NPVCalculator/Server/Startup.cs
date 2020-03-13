@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NPVCalculator.Server.DataContexts;
@@ -14,6 +16,14 @@ namespace NPVCalculator.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
 
         readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options =>
@@ -34,7 +44,10 @@ namespace NPVCalculator.Server
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
                     new[] { "application/octet-stream" });
             });
-            services.AddSingleton(new NPVContext());
+            //services.AddSingleton(new NPVContext());
+
+            services.AddDbContext<NPVContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("NPVConnection")));
 
             services.AddControllers().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

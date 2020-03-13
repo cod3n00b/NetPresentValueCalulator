@@ -18,16 +18,33 @@ namespace NPVCalculator.Shared.Models
         public decimal DiscountRateIncrement { get; set; }
         public List<NPVResult> Results { get; set; } = new List<NPVResult>();
         public DateTime DateCreated { get; set; }
+        [NotMapped]
+        public bool HasError
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(this.ErrorMessage);
+            }
+        }
+        [NotMapped]
+        public string ErrorMessage { get; set; }
 
-        public decimal ComputeNPV(decimal currentDiscount)
+        public decimal ComputeNPV(decimal discRate)
         {
             decimal[] cashFlows = GetCashFlowValues();
-            decimal totalCashFlows = cashFlows.Sum();
-            decimal npv = (totalCashFlows / (1 + currentDiscount)) - this.InitialValue;
-            return npv;
+            decimal totalNPV = 0;
+            int period = 1;
+            //loop for each cash flow.
+            foreach (var cashFlow in cashFlows)
+            {
+                var npv = (cashFlow / Convert.ToDecimal(Math.Pow(Convert.ToDouble((1 + discRate)), period)));
+                totalNPV += npv;
+                period++;
+            }
+            return totalNPV - this.InitialValue;
         }
 
-        public decimal[] GetCashFlowValues()
+        private decimal[] GetCashFlowValues()
         {
             var cashflows = this.CashFlows.Split(',')
                 .Select<string, decimal>(x => Convert.ToDecimal(x));
@@ -52,8 +69,6 @@ namespace NPVCalculator.Shared.Models
                 {
                     ReferenceId = this.ReferenceId,
                     Criteria = this,
-                    CashFlows = this.CashFlows,
-                    InitialValue = this.InitialValue,
                     DiscountRate = currentDiscount,
                     NPV = ComputeNPV(currentDiscount)
                 };

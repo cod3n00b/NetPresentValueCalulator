@@ -15,7 +15,6 @@ namespace NPVCalculator.Server.DataContexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=NetPresentValue;Integrated Security=True;MultipleActiveResultSets=True;App=EntityFramework");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

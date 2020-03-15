@@ -16,20 +16,20 @@
                 </div>
                 <div class="card-body slim-scroll">
 
-                    @foreach (KeyValuePair<int, decimal> cashflow in criteriaVM.CashFlows)
+                    @foreach(var cashFlow in criteriaVM.CashFlows)
                     {
                         <div class="media py-3 align-items-center justify-content-between">
                             <div class="d-flex rounded-circle align-items-center justify-content-center mr-3 media-icon iconbox-45 bg-primary text-white">
                                 <i class="mdi mdi-currency-php font-size-20"></i>
                             </div>
                             <div class="media-body pr-3 ">
-                                <label class="mt-0 mb-1 font-size-15 text-dark">@("₱" + cashflow.Value.ToString("#,#.##"))</label>
+                                <label class="mt-0 mb-1 font-size-15 text-dark">@("₱" + cashFlow.ToString("#,#.##"))</label>
                             </div>
                             <div>
-                                <button type="button" class="text-black-50 mr-2 font-size-20" @onclick="async () => await RemoveSelectedCashFlowAsync(cashflow.Key)" tooltip="Remove Cash Flow"><i class="mdi mdi-close-circle-outline font-size=20"></i></button>
+                                <button type="button" class="text-black-50 mr-2 font-size-20" @onclick="async () => await RemoveSelectedCashFlowAsync(cashFlow)" tooltip="Remove Cash Flow"><i class="mdi mdi-close-circle-outline font-size=20"></i></button>
                             </div>
                         </div>
-                    }
+                     }
                 </div>
             </div>
             <ValidationMessage For="@(() => criteriaVM.CashFlowHidden)" />
@@ -115,20 +115,19 @@
 
     private async Task AddCashFlowAsync()
     {
-        int cashFlowIndex = (criteriaVM.CashFlows.Count - 1);
-        criteriaVM.CashFlows.Add(cashFlowIndex + 1, Convert.ToDecimal(inputCashFlowVM.InputCashFlow));
-        criteriaVM.CashFlowHidden = string.Join(',', criteriaVM.CashFlows.Values);
+        criteriaVM.CashFlows.Add(new CashFlowViewModel(Convert.ToDecimal(inputCashFlowVM.InputCashFlow)));
+        criteriaVM.CashFlowHidden = string.Join(',', criteriaVM.CashFlows);
         inputCashFlowVM.InputCashFlow = "";
         StateHasChanged();
         await JSRuntime.InvokeVoidAsync("toggleModal", "cashFlowModal", "hide");
     }
 
-    private async Task RemoveSelectedCashFlowAsync(int index)
+    private async Task RemoveSelectedCashFlowAsync(CashFlowViewModel cashFlowVM)
     {
         await Task.Run(() =>
         {
-            criteriaVM.CashFlows.Remove(index);
-            criteriaVM.CashFlowHidden = criteriaVM.CashFlows.Count > 0 ? string.Join(',', criteriaVM.CashFlows.Values) : "";
+            criteriaVM.CashFlows.Remove(cashFlowVM);
+            criteriaVM.CashFlowHidden = criteriaVM.CashFlows.Count > 0 ? string.Join(',', criteriaVM.CashFlows) : "";
         });
 
     }

@@ -10,7 +10,7 @@ namespace NPVCalculator.Client.ViewModels
     public class CriteriaViewModel
     {
         [Display(Name = "Cash Flows")]
-        public Dictionary<int, decimal> CashFlows { get; set; } = new Dictionary<int, decimal>();
+        public List<CashFlowViewModel> CashFlows { get; set; } = new List<CashFlowViewModel>();
         [Required(ErrorMessage = "Please enter at least one cash flow.")]
         public string CashFlowHidden { get; set; }
         [Required]
@@ -35,7 +35,7 @@ namespace NPVCalculator.Client.ViewModels
 
             var criteria = new NPVCriteria()
             {
-                CashFlows = string.Join(",", this.CashFlows.Values),
+                CashFlows = string.Join(",", this.CashFlows),
                 InitialValue = Convert.ToDecimal(this.InitialValue),
                 LowerBoundDiscountRate = Convert.ToDecimal(this.LowerBoundDiscountRate) / 100,
                 UpperBoundDiscountRate = Convert.ToDecimal(this.UpperBoundDiscountRate) / 100,
